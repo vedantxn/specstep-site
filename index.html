@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SpecStep</title>
+<meta name="description" content="SpecStep: a dataset and RL environment where models solve structures from literature NMR, IR and HRMS data, and code checks every step against the true molecule.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <h1>SpecStep</h1>
+  <p class="subtitle">Verifiable intermediate rewards for LLM structure elucidation from literature NMR, IR and HRMS data</p>
+  <p class="authors">Vedant Nayak</p>
+  <!-- Chemistry co-author goes here: <p class="authors">Vedant Nayak and …</p> -->
+  <p class="availability">The preprint is in preparation. Code, data and the RL environment will be released with it. <a href="#cite">How to cite</a></p>
+  <p class="status" role="note">Draft. A chemist has not yet audited the answer key, and the numbers on this page may change.</p>
+</header>
+
+<main id="main">
+
+<figure class="task" aria-labelledby="task-caption">
+  <figcaption id="task-caption" class="task-lede">
+    <p>A model gets the peak lists reported for an unknown compound in an open-access paper. It does not get the formula or the authors’ assignments. Code then checks each conclusion it reaches against the true molecule.</p>
+  </figcaption>
+
+  <div class="spectrum-wrap">
+    <p class="spectrum-label">¹H NMR, 400 MHz, CDCl<sub>3</sub>, redrawn from the reported peak list</p>
+    <div class="spectrum" id="h1" data-spectrum='{"h1":[{"shift":10.9,"range":null,"mult":"s","nH":1,"J":[]},{"shift":7.78,"range":null,"mult":"d","nH":1,"J":[7.8]},{"shift":7.66,"range":null,"mult":"d","nH":1,"J":[7.5]},{"shift":7.31,"range":null,"mult":"t","nH":1,"J":[7.4]},{"shift":7.15,"range":null,"mult":"t","nH":1,"J":[7.7]},{"shift":6.8,"range":null,"mult":"s","nH":1,"J":[]},{"shift":6.6,"range":null,"mult":"t","nH":1,"J":[7.8]},{"shift":3.93,"range":null,"mult":"br s","nH":2,"J":[]},{"shift":null,"range":[3.14,3.23],"mult":"m","nH":2,"J":[]},{"shift":null,"range":[2.03,2.09],"mult":"m","nH":2,"J":[]}],"c13":[167.8,167.0,134.5,129.0,125.0,124.7,119.3,116.7,102.5,48.5,37.6,29.1],"freq":400,"solvent":"CDCl3"}'>
+      <noscript><p class="small">The interactive spectrum needs JavaScript. The peak list is in the task file specstep-train-05026.</p></noscript>
+    </div>
+    <p class="spectrum-hint" id="h1-readout" aria-live="polite">Point at, tap or tab to a peak to see its shift, multiplicity and coupling.</p>
+  </div>
+
+  <dl class="other-data">
+    <div><dt>¹³C NMR, δ</dt><dd>167.8, 167.0, 134.5, 129.0, 125.0, 124.7, 119.3, 116.7, 102.5, 48.5, 37.6, 29.1</dd></div>
+    <div><dt>IR, cm⁻¹</dt><dd>3368, 3187, 1667</dd></div>
+    <div><dt>HRMS [M+H]⁺, found</dt><dd>228.1132</dd></div>
+  </dl>
+
+  <div class="graded">
+    <h2 class="graded-title">One answer, graded step by step</h2>
+    <p class="graded-sub">GPT-6.1 Sol at low reasoning effort, one of eight samples on this task.</p>
+    <div class="table-scroll">
+    <table class="steps">
+      <thead><tr><th scope="col">Step</th><th scope="col">Model said</th><th scope="col">Answer key</th><th scope="col">Score × weight</th></tr></thead>
+      <tbody>
+<tr class="step is-right" style="--i:0"><th scope="row">Molecular formula</th><td>C<sub>13</sub>H<sub>13</sub>N<sub>3</sub>O</td><td class="truth">C<sub>13</sub>H<sub>13</sub>N<sub>3</sub>O</td><td class="verdict"><span class="glyph" aria-hidden="true">✓</span><span class="vh">Right, </span>1.00<span class="weight"> × 0.10</span></td></tr>
+<tr class="step is-right" style="--i:1"><th scope="row">Double-bond equivalents</th><td>9</td><td class="truth">9</td><td class="verdict"><span class="glyph" aria-hidden="true">✓</span><span class="vh">Right, </span>1.00<span class="weight"> × 0.05</span></td></tr>
+<tr class="step is-right" style="--i:2"><th scope="row">Functional groups</th><td>amide, imine, benzene ring, heteroaromatic ring</td><td class="truth">amide, imine, benzene ring, heteroaromatic ring</td><td class="verdict"><span class="glyph" aria-hidden="true">✓</span><span class="vh">Right, </span>1.00<span class="weight"> × 0.10</span></td></tr>
+<tr class="step is-partial" style="--i:3"><th scope="row">Proton environments</th><td>8 sets<span class="step-note">6 of 8 sets match in size and neighbour count</span></td><td class="truth">8 sets</td><td class="verdict"><span class="glyph" aria-hidden="true">◐</span><span class="vh">Partly right, </span>0.75<span class="weight"> × 0.15</span></td></tr>
+<tr class="step is-right" style="--i:4"><th scope="row">Carbon environments</th><td>13</td><td class="truth">13</td><td class="verdict"><span class="glyph" aria-hidden="true">✓</span><span class="vh">Right, </span>1.00<span class="weight"> × 0.05</span></td></tr>
+<tr class="step is-wrong" style="--i:5"><th scope="row">Structure</th><td>indol-2-yl<span class="step-note">Wrong ring position. Tanimoto similarity 0.49, so half of that as partial credit</span></td><td class="truth">indol-7-yl</td><td class="verdict"><span class="glyph" aria-hidden="true">✗</span><span class="vh">Wrong, partial credit, </span>0.24<span class="weight"> × 0.55</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="structures">
+      <figure>
+        <div class="mol"><svg role='img' focusable='false' version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+viewBox='0 0 360 240' viewBox='0 0 360 240'>
+<path class='bond-0 atom-0 atom-1' d='M 134.9,67.4 L 112.0,97.4' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0 atom-0 atom-1' d='M 129.3,63.2 L 106.5,93.1' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 110.3,93.9 L 71.2,85.8' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 58.1,89.9 L 28.8,114.3' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 28.8,114.3 L 29.8,160.9' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 29.8,160.9 L 66.8,189.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 66.8,189.2 L 105.5,179.5' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 115.7,169.7 L 131.3,135.5' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 109.4,166.8 L 123.6,135.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 131.3,135.5 L 177.9,134.5' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-8 atom-9' d='M 177.9,134.5 L 206.1,171.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-8 atom-9' d='M 186.6,134.3 L 208.6,163.4' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-9 atom-9 atom-10' d='M 206.1,171.6 L 250.1,156.3' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-10 atom-10 atom-11' d='M 250.1,156.3 L 290.9,178.8' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-10 atom-10 atom-11' d='M 257.0,152.1 L 290.8,170.7' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-11 atom-11 atom-12' d='M 290.9,178.8 L 330.8,154.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-12 atom-12 atom-13' d='M 330.8,154.6 L 329.8,108.1' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-12 atom-12 atom-13' d='M 323.7,150.8 L 322.9,112.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-13 atom-13 atom-14' d='M 329.8,108.1 L 289.0,85.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-14 atom-14 atom-15' d='M 289.0,85.6 L 249.1,109.7' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-14 atom-14 atom-15' d='M 289.2,93.7 L 256.2,113.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-15 atom-15 atom-16' d='M 249.1,109.7 L 211.1,98.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-16 atom-7 atom-1' d='M 131.3,135.5 L 110.3,93.9' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-17 atom-16 atom-8' d='M 198.9,104.4 L 177.9,134.5' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-18 atom-15 atom-10' d='M 249.1,109.7 L 250.1,156.3' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 108.3,93.5 L 110.3,93.9 L 111.3,96.0' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 30.3,113.1 L 28.8,114.3 L 28.8,116.6' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 29.7,158.6 L 29.8,160.9 L 31.6,162.3' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 64.9,187.8 L 66.8,189.2 L 68.7,188.7' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 204.7,169.8 L 206.1,171.6 L 208.3,170.9' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 288.9,177.7 L 290.9,178.8 L 292.9,177.6' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 328.8,155.9 L 330.8,154.6 L 330.8,152.3' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 329.9,110.4 L 329.8,108.1 L 327.8,106.9' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 291.0,86.7 L 289.0,85.6 L 287.0,86.8' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-0' d='M 132.5 56.9
+Q 132.5 53.8, 134.1 52.0
+Q 135.6 50.2, 138.6 50.2
+Q 141.5 50.2, 143.0 52.0
+Q 144.6 53.8, 144.6 56.9
+Q 144.6 60.1, 143.0 62.0
+Q 141.4 63.8, 138.6 63.8
+Q 135.6 63.8, 134.1 62.0
+Q 132.5 60.2, 132.5 56.9
+M 138.6 62.3
+Q 140.6 62.3, 141.6 60.9
+Q 142.7 59.6, 142.7 56.9
+Q 142.7 54.3, 141.6 53.0
+Q 140.6 51.7, 138.6 51.7
+Q 136.5 51.7, 135.4 53.0
+Q 134.4 54.3, 134.4 56.9
+Q 134.4 59.6, 135.4 60.9
+Q 136.5 62.3, 138.6 62.3
+' fill='currentColor'/>
+<path class='atom-2' d='M 61.7 77.9
+L 66.0 84.9
+Q 66.5 85.6, 67.1 86.8
+Q 67.8 88.1, 67.9 88.1
+L 67.9 77.9
+L 69.6 77.9
+L 69.6 91.1
+L 67.8 91.1
+L 63.2 83.5
+Q 62.6 82.6, 62.1 81.5
+Q 61.5 80.5, 61.3 80.2
+L 61.3 91.1
+L 59.6 91.1
+L 59.6 77.9
+L 61.7 77.9
+' fill='currentColor'/>
+<path class='atom-2' d='M 59.5 63.4
+L 61.2 63.4
+L 61.2 69.0
+L 68.0 69.0
+L 68.0 63.4
+L 69.8 63.4
+L 69.8 76.6
+L 68.0 76.6
+L 68.0 70.5
+L 61.2 70.5
+L 61.2 76.6
+L 59.5 76.6
+L 59.5 63.4
+' fill='currentColor'/>
+<path class='atom-6' d='M 109.1 171.3
+L 113.4 178.3
+Q 113.8 179.0, 114.5 180.2
+Q 115.2 181.4, 115.2 181.5
+L 115.2 171.3
+L 117.0 171.3
+L 117.0 184.5
+L 115.2 184.5
+L 110.6 176.8
+Q 110.0 175.9, 109.4 174.9
+Q 108.9 173.9, 108.7 173.6
+L 108.7 184.5
+L 107.0 184.5
+L 107.0 171.3
+L 109.1 171.3
+' fill='currentColor'/>
+<path class='atom-16' d='M 201.6 89.7
+L 205.9 96.6
+Q 206.4 97.3, 207.1 98.6
+Q 207.7 99.8, 207.8 99.9
+L 207.8 89.7
+L 209.5 89.7
+L 209.5 102.9
+L 207.7 102.9
+L 203.1 95.2
+Q 202.5 94.3, 202.0 93.3
+Q 201.4 92.3, 201.2 91.9
+L 201.2 102.9
+L 199.5 102.9
+L 199.5 89.7
+L 201.6 89.7
+' fill='currentColor'/>
+<path class='atom-16' d='M 199.4 75.1
+L 201.2 75.1
+L 201.2 80.7
+L 207.9 80.7
+L 207.9 75.1
+L 209.7 75.1
+L 209.7 88.3
+L 207.9 88.3
+L 207.9 82.2
+L 201.2 82.2
+L 201.2 88.3
+L 199.4 88.3
+L 199.4 75.1
+' fill='currentColor'/>
+</svg>
+</div>
+        <figcaption>What the model proposed</figcaption>
+      </figure>
+      <figure>
+        <div class="mol"><svg role='img' focusable='false' version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+viewBox='0 0 360 240' viewBox='0 0 360 240'>
+<path class='bond-0 atom-0 atom-1' d='M 134.9,42.2 L 118.0,85.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0 atom-0 atom-1' d='M 127.2,39.2 L 110.3,82.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 114.9,82.2 L 67.6,85.9' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 53.3,96.2 L 28.8,132.3' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 28.8,132.3 L 45.3,185.1' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 45.3,185.1 L 96.8,205.1' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 96.8,205.1 L 136.8,181.8' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 146.0,167.7 L 152.6,122.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 137.8,166.5 L 143.9,125.4' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 152.6,122.6 L 205.4,106.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-8 atom-9' d='M 205.4,106.2 L 217.5,52.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-9 atom-9 atom-10' d='M 217.5,52.2 L 270.3,35.8' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-9 atom-9 atom-10' d='M 224.6,58.7 L 268.2,45.1' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-10 atom-10 atom-11' d='M 270.3,35.8 L 311.0,73.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-11 atom-11 atom-12' d='M 311.0,73.2 L 298.8,127.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-11 atom-11 atom-12' d='M 301.8,76.1 L 291.8,120.7' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-12 atom-12 atom-13' d='M 298.8,127.2 L 330.8,172.3' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-13 atom-13 atom-14' d='M 330.8,172.3 L 297.8,216.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-13 atom-13 atom-14' d='M 320.6,172.1 L 294.7,206.8' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-14 atom-14 atom-15' d='M 297.8,216.6 L 253.2,201.5' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-15 atom-15 atom-16' d='M 245.5,189.3 L 246.1,143.6' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-16 atom-7 atom-1' d='M 152.6,122.6 L 114.9,82.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-17 atom-16 atom-8' d='M 246.1,143.6 L 205.4,106.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-17 atom-16 atom-8' d='M 248.2,134.3 L 214.6,103.3' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-18 atom-16 atom-12' d='M 246.1,143.6 L 298.8,127.2' style='fill:none;fill-rule:evenodd;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 112.5,82.4 L 114.9,82.2 L 116.8,84.3' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 30.0,130.5 L 28.8,132.3 L 29.6,135.0' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 44.4,182.5 L 45.3,185.1 L 47.8,186.1' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 94.2,204.1 L 96.8,205.1 L 98.8,204.0' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 216.9,54.9 L 217.5,52.2 L 220.2,51.4' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 267.7,36.6 L 270.3,35.8 L 272.3,37.6' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 308.9,71.4 L 311.0,73.2 L 310.3,75.9' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 329.2,170.0 L 330.8,172.3 L 329.1,174.5' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 299.4,214.4 L 297.8,216.6 L 295.6,215.9' style='fill:none;stroke:currentColor;stroke-width:1.6px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-0' d='M 127.7 30.8
+Q 127.7 27.0, 129.6 24.9
+Q 131.5 22.8, 134.9 22.8
+Q 138.4 22.8, 140.3 24.9
+Q 142.1 27.0, 142.1 30.8
+Q 142.1 34.6, 140.2 36.7
+Q 138.4 38.9, 134.9 38.9
+Q 131.5 38.9, 129.6 36.7
+Q 127.7 34.6, 127.7 30.8
+M 134.9 37.1
+Q 137.3 37.1, 138.6 35.5
+Q 139.9 33.9, 139.9 30.8
+Q 139.9 27.7, 138.6 26.1
+Q 137.3 24.6, 134.9 24.6
+Q 132.5 24.6, 131.2 26.1
+Q 130.0 27.7, 130.0 30.8
+Q 130.0 33.9, 131.2 35.5
+Q 132.5 37.1, 134.9 37.1
+' fill='currentColor'/>
+<path class='atom-2' d='M 38.5 78.7
+L 40.6 78.7
+L 40.6 85.4
+L 48.6 85.4
+L 48.6 78.7
+L 50.8 78.7
+L 50.8 94.4
+L 48.6 94.4
+L 48.6 87.1
+L 40.6 87.1
+L 40.6 94.4
+L 38.5 94.4
+L 38.5 78.7
+' fill='currentColor'/>
+<path class='atom-2' d='M 56.3 78.7
+L 61.5 87.0
+Q 62.0 87.8, 62.8 89.3
+Q 63.6 90.8, 63.7 90.9
+L 63.7 78.7
+L 65.7 78.7
+L 65.7 94.4
+L 63.6 94.4
+L 58.1 85.3
+Q 57.4 84.2, 56.8 83.0
+Q 56.1 81.8, 55.9 81.4
+L 55.9 94.4
+L 53.9 94.4
+L 53.9 78.7
+L 56.3 78.7
+' fill='currentColor'/>
+<path class='atom-6' d='M 141.1 169.5
+L 146.2 177.8
+Q 146.8 178.6, 147.6 180.1
+Q 148.4 181.6, 148.4 181.7
+L 148.4 169.5
+L 150.5 169.5
+L 150.5 185.2
+L 148.4 185.2
+L 142.9 176.1
+Q 142.2 175.0, 141.5 173.8
+Q 140.9 172.6, 140.7 172.2
+L 140.7 185.2
+L 138.6 185.2
+L 138.6 169.5
+L 141.1 169.5
+' fill='currentColor'/>
+<path class='atom-15' d='M 224.1 191.1
+L 226.3 191.1
+L 226.3 197.7
+L 234.3 197.7
+L 234.3 191.1
+L 236.4 191.1
+L 236.4 206.7
+L 234.3 206.7
+L 234.3 199.5
+L 226.3 199.5
+L 226.3 206.7
+L 224.1 206.7
+L 224.1 191.1
+' fill='currentColor'/>
+<path class='atom-15' d='M 242.0 191.1
+L 247.1 199.4
+Q 247.6 200.2, 248.4 201.7
+Q 249.2 203.2, 249.3 203.2
+L 249.3 191.1
+L 251.3 191.1
+L 251.3 206.7
+L 249.2 206.7
+L 243.7 197.7
+Q 243.1 196.6, 242.4 195.4
+Q 241.7 194.2, 241.5 193.8
+L 241.5 206.7
+L 239.5 206.7
+L 239.5 191.1
+L 242.0 191.1
+' fill='currentColor'/>
+</svg>
+</div>
+        <figcaption>The recorded structure</figcaption>
+      </figure>
+    </div>
+
+    <div class="rewards">
+      <p><span class="reward-num">0.55</span> SpecStep reward. Four steps are right, the protons are mostly right, and the structure is close.</p>
+      <p><span class="reward-num zero">0.00</span> Final-answer reward. A wrong structure scores the same as a random guess.</p>
+    </div>
+  </div>
+  <p class="source">Task specstep-train-05026, training split. Data from R Soc Open Sci. 2018 Sep 12; 5(9):181140, <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6170558/">PMC6170558</a>, CC BY.</p>
+</figure>
+
+<section aria-labelledby="abstract">
+  <h2 id="abstract">Abstract</h2>
+  <p>Benchmarks for structure elucidation from spectra score only the final molecule, which tells us little about which parts of a wrong answer are right and gives reinforcement learning (RL) a sparse signal. We introduce SpecStep, a dataset and RL environment built from 19,321 compounds whose ¹H NMR, ¹³C NMR, IR and high-resolution mass spectrometry (HRMS) data were reported in open-access articles. The molecular formula is withheld. A model must return its final structure together with five properties of it (formula, double-bond equivalents, functional groups, proton environments with neighbour counts, and carbon environments), and each is scored against the true structure with RDKit, with no human or LLM judge. We show that the formula is not given away by the mass alone: a median of 22 formulas fit each HRMS value within 5&nbsp;ppm.</p>
+  <p>On a size-balanced 150-task core set, Claude Opus 5.5 and GPT-6 Astra at maximum reasoning effort solve 75.3% and 69.3% of structures, a difference that is not statistically significant, ahead of GPT-6.1 Sol (60.7%), Grok 4.7 (36.7%) and the open-weight DeepSeek-V4-Pro (13.3%). Accuracy falls with molecular size: on 30 harder molecules of 36–45 heavy atoms, GPT-6 Astra solves the most (53%) and answers every task, while Opus 5.5 solves 43% and runs out of output budget on almost half. Much of the remaining gap is responses that do not finish rather than wrong chemistry. When frontier models get the structure right, their reported properties are almost always right too, whereas a weaker model’s properties often contradict its own answer. A sampling probe without training suggests the decomposed reward separates failed attempts that a final-answer reward scores identically. We release the grader, the environment, and train and test splits with per-task provenance and quality flags.</p>
+</section>
+
+<section aria-labelledby="steps">
+  <h2 id="steps">What is checked</h2>
+  <p>The model reports six things in one answer. They follow the order a chemist works in, and each has a single correct value that RDKit computes from the true molecule.</p>
+  <ol class="checks">
+    <li><strong>Molecular formula.</strong> Exact match. Only 4% of test tasks have a single formula that fits the mass within 5&nbsp;ppm, so the model has to use the NMR counts too.</li>
+    <li><strong>Double-bond equivalents.</strong> Exact match.</li>
+    <li><strong>Functional groups.</strong> F1 over 23 groups defined by SMARTS patterns. A group that appears under one reading of aromaticity but not the other is optional and is neither credited nor penalised.</li>
+    <li><strong>Proton environments.</strong> F1 over sets of equivalent carbon-bound protons, each with its size and the number of protons on neighbouring carbons. Resolved diastereotopic and =CH₂ protons are accepted as separate sets.</li>
+    <li><strong>Carbon environments.</strong> The number of symmetry-distinct carbons. Full credit for an exact match, half if it is off by one.</li>
+    <li><strong>Structure.</strong> Connectivity match on the InChIKey first block, with tautomers accepted. A wrong structure earns half its Tanimoto similarity, so an answer with five right properties and a wrong structure can earn at most 0.725.</li>
+  </ol>
+  <p>The structure carries 0.55 of the reward. Stereochemistry is not graded.</p>
+</section>
+
+<section aria-labelledby="results">
+  <h2 id="results">Results</h2>
+  <p>Exact structure match at each model’s highest available reasoning effort. Tasks without a usable answer count as wrong. Bars are 95% confidence intervals. Opus 5.5 and GPT-6 Astra are not significantly different on the core set (exact McNemar test, p&nbsp;=&nbsp;0.08), and both are ahead of GPT-6.1 Sol (p&nbsp;&lt;&nbsp;0.005). On the hard probe no difference is significant.</p>
+  <figure class="chart">
+    <div class="chart-scroll">
+<svg class="dotplot" viewBox="0 0 760 302" role="img" aria-labelledby="dot-title dot-desc">
+<title id="dot-title">Exact structure match by model</title>
+<desc id="dot-desc">Exact-match rate with 95% confidence intervals on the 150-task core set and the 30-task hard probe. The same numbers are in the table below.</desc>
+<text class="panel-title" x="190" y="14">Core set, 150 tasks</text>
+<line class="grid" x1="190" x2="190" y1="26" y2="276"/>
+<text class="tick" x="190" y="294" text-anchor="middle">0%</text>
+<line class="grid" x1="252.5" x2="252.5" y1="26" y2="276"/>
+<text class="tick" x="252.5" y="294" text-anchor="middle">25%</text>
+<line class="grid" x1="315.0" x2="315.0" y1="26" y2="276"/>
+<text class="tick" x="315.0" y="294" text-anchor="middle">50%</text>
+<line class="grid" x1="377.5" x2="377.5" y1="26" y2="276"/>
+<text class="tick" x="377.5" y="294" text-anchor="middle">75%</text>
+<line class="grid" x1="440" x2="440" y1="26" y2="276"/>
+<text class="tick" x="440" y="294" text-anchor="middle">100%</text>
+<text class="panel-title" x="480" y="14">Hard probe, 30 tasks (36–45 heavy atoms)</text>
+<line class="grid" x1="480" x2="480" y1="26" y2="276"/>
+<text class="tick" x="480" y="294" text-anchor="middle">0%</text>
+<line class="grid" x1="542.5" x2="542.5" y1="26" y2="276"/>
+<text class="tick" x="542.5" y="294" text-anchor="middle">25%</text>
+<line class="grid" x1="605.0" x2="605.0" y1="26" y2="276"/>
+<text class="tick" x="605.0" y="294" text-anchor="middle">50%</text>
+<line class="grid" x1="667.5" x2="667.5" y1="26" y2="276"/>
+<text class="tick" x="667.5" y="294" text-anchor="middle">75%</text>
+<line class="grid" x1="730" x2="730" y1="26" y2="276"/>
+<text class="tick" x="730" y="294" text-anchor="middle">100%</text>
+<g class="row">
+<text class="model" x="174" y="56.0" text-anchor="end">Claude Opus 5.5 <tspan class="effort">max</tspan></text>
+<g class="dot" tabindex="0" data-tip="Claude Opus 5.5 (max): 113/150 exact, 75.3% (95% CI 68–82%)"><rect class="hit" x="190" y="34.0" width="250" height="34"/><line class="ci" x1="360.0" x2="395.0" y1="51.0" y2="51.0"/><circle cx="378.3333333333333" cy="51.0" r="5"/></g>
+<g class="dot" tabindex="0" data-tip="Claude Opus 5.5 (max): 13/30 exact, 43.3% (95% CI 27–63%)"><rect class="hit" x="480" y="34.0" width="250" height="34"/><line class="ci" x1="546.6666666666666" x2="638.3333333333333" y1="51.0" y2="51.0"/><circle cx="588.3333333333334" cy="51.0" r="5"/></g>
+</g>
+<g class="row">
+<text class="model" x="174" y="90.0" text-anchor="end">GPT-6 Astra <tspan class="effort">max</tspan></text>
+<g class="dot" tabindex="0" data-tip="GPT-6 Astra (max): 104/150 exact, 69.3% (95% CI 62–77%)"><rect class="hit" x="190" y="68.0" width="250" height="34"/><line class="ci" x1="345.0" x2="381.6666666666667" y1="85.0" y2="85.0"/><circle cx="363.33333333333337" cy="85.0" r="5"/></g>
+<g class="dot" tabindex="0" data-tip="GPT-6 Astra (max): 16/30 exact, 53.3% (95% CI 37–70%)"><rect class="hit" x="480" y="68.0" width="250" height="34"/><line class="ci" x1="571.6666666666666" x2="655.0" y1="85.0" y2="85.0"/><circle cx="613.3333333333334" cy="85.0" r="5"/></g>
+</g>
+<g class="row">
+<text class="model" x="174" y="124.0" text-anchor="end">GPT-6.1 Sol <tspan class="effort">max</tspan></text>
+<g class="dot" tabindex="0" data-tip="GPT-6.1 Sol (max): 91/150 exact, 60.7% (95% CI 52–69%)"><rect class="hit" x="190" y="102.0" width="250" height="34"/><line class="ci" x1="320.0" x2="361.66666666666663" y1="119.0" y2="119.0"/><circle cx="341.6666666666667" cy="119.0" r="5"/></g>
+<g class="dot" tabindex="0" data-tip="GPT-6.1 Sol (max): 11/30 exact, 36.7% (95% CI 20–53%)"><rect class="hit" x="480" y="102.0" width="250" height="34"/><line class="ci" x1="530.0" x2="613.3333333333334" y1="119.0" y2="119.0"/><circle cx="571.6666666666666" cy="119.0" r="5"/></g>
+</g>
+<g class="row">
+<text class="model" x="174" y="158.0" text-anchor="end">Grok 4.7 <tspan class="effort">xhigh</tspan></text>
+<g class="dot" tabindex="0" data-tip="Grok 4.7 (xhigh): 55/150 exact, 36.7% (95% CI 29–44%)"><rect class="hit" x="190" y="136.0" width="250" height="34"/><line class="ci" x1="263.3333333333333" x2="300.0" y1="153.0" y2="153.0"/><circle cx="281.66666666666663" cy="153.0" r="5"/></g>
+<text class="na" x="486" y="158.0">not run</text>
+</g>
+<g class="row">
+<text class="model" x="174" y="192.0" text-anchor="end">DeepSeek-V4-Pro <tspan class="effort">high</tspan></text>
+<g class="dot" tabindex="0" data-tip="DeepSeek-V4-Pro (high): 20/150 exact, 13.3% (95% CI 8–19%)"><rect class="hit" x="190" y="170.0" width="250" height="34"/><line class="ci" x1="210.0" x2="238.33333333333334" y1="187.0" y2="187.0"/><circle cx="223.33333333333334" cy="187.0" r="5"/></g>
+<g class="dot" tabindex="0" data-tip="DeepSeek-V4-Pro (high): 0/30 exact, 0.0% (95% CI 0–0%)"><rect class="hit" x="480" y="170.0" width="250" height="34"/><line class="ci" x1="480.0" x2="480.0" y1="187.0" y2="187.0"/><circle cx="480" cy="187.0" r="5"/></g>
+</g>
+<g class="row muted">
+<text class="model" x="174" y="226.0" text-anchor="end">GPT-6.1 Sol <tspan class="effort">low</tspan></text>
+<g class="dot" tabindex="0" data-tip="GPT-6.1 Sol (low): 59/150 exact, 39.3% (95% CI 31–47%)"><rect class="hit" x="190" y="204.0" width="250" height="34"/><line class="ci" x1="268.33333333333337" x2="308.3333333333333" y1="221.0" y2="221.0"/><circle cx="288.3333333333333" cy="221.0" r="5"/></g>
+<text class="na" x="486" y="226.0">not run</text>
+</g>
+<g class="row muted">
+<text class="model" x="174" y="260.0" text-anchor="end">Claude Haiku 4.5 <tspan class="effort">16k budget</tspan></text>
+<g class="dot" tabindex="0" data-tip="Claude Haiku 4.5 (16k budget): 1/90 exact, 1.1% (95% CI 0–3%)"><rect class="hit" x="190" y="238.0" width="250" height="34"/><line class="ci" x1="190.0" x2="198.33333333333334" y1="255.0" y2="255.0"/><circle cx="192.77777777777777" cy="255.0" r="5"/></g>
+<text class="na" x="486" y="260.0">not run</text>
+</g>
+</svg>
+    </div>
+    <div class="tip" id="tip" role="status" hidden></div>
+  </figure>
+  <div class="table-scroll">
+  <table class="results">
+    <caption>Core set of 150 test tasks, and the 30-task hard probe from the training split. Reward is the mean SpecStep reward.</caption>
+    <thead><tr><th scope="col">Model and effort</th><th scope="col">Exact</th><th scope="col">Rate</th><th scope="col">95% CI</th><th scope="col">Answered</th><th scope="col">Reward</th><th scope="col">Hard probe</th></tr></thead>
+    <tbody>
+<tr><th scope="row">Claude Opus 5.5 <span class="effort">max</span></th><td>113/150</td><td>75.3%</td><td>68–82%</td><td>80.0%</td><td>0.78</td><td>13/30</td></tr>
+<tr><th scope="row">GPT-6 Astra <span class="effort">max</span></th><td>104/150</td><td>69.3%</td><td>62–77%</td><td>100.0%</td><td>0.86</td><td>16/30</td></tr>
+<tr><th scope="row">GPT-6.1 Sol <span class="effort">max</span></th><td>91/150</td><td>60.7%</td><td>52–69%</td><td>100.0%</td><td>0.81</td><td>11/30</td></tr>
+<tr><th scope="row">Grok 4.7 <span class="effort">xhigh</span></th><td>55/150</td><td>36.7%</td><td>29–44%</td><td>60.0%</td><td>0.49</td><td>–</td></tr>
+<tr><th scope="row">DeepSeek-V4-Pro <span class="effort">high</span></th><td>20/150</td><td>13.3%</td><td>8–19%</td><td>56.0%</td><td>0.32</td><td>0/30</td></tr>
+<tr class=muted><th scope="row">GPT-6.1 Sol <span class="effort">low</span></th><td>59/150</td><td>39.3%</td><td>31–47%</td><td>100.0%</td><td>0.63</td><td>–</td></tr>
+<tr class=muted><th scope="row">Claude Haiku 4.5 <span class="effort">16k budget</span></th><td>1/90</td><td>1.1%</td><td>0–3%</td><td>100.0%</td><td>0.27</td><td>–</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>Opus 5.5 gave no answer on 20% of core tasks, mostly because it spent its whole 64k-token budget reasoning. On the hard probe that happened on 13 of 30 tasks. Grok 4.7 was run through the Cursor CLI with a 60-minute limit, which it often hit.</p>
+</section>
+
+<section aria-labelledby="signal">
+  <h2 id="signal">A denser signal for RL</h2>
+  <p>Group-based RL methods such as GRPO learn nothing from a prompt when every sample in the group gets the same reward. We drew 8 samples on each of 40 training tasks from GPT-6.1 Sol at low effort, without any training, and scored the same samples three ways.</p>
+  <table class="signal">
+    <thead><tr><th scope="col">Reward</th><th scope="col">Groups with no signal</th><th scope="col">All-wrong groups that still get a signal</th></tr></thead>
+    <tbody>
+      <tr><th scope="row">Final answer only</th><td>65%</td><td>0 of 13</td></tr>
+      <tr><th scope="row">Format, valid SMILES and similarity</th><td>40%</td><td>11 of 13</td></tr>
+      <tr><th scope="row">SpecStep</th><td>30%</td><td>12 of 13</td></tr>
+    </tbody>
+  </table>
+  <p>In every group with both right and wrong samples, SpecStep scored each right sample above each wrong one. This is a probe of the reward, not a training result.</p>
+</section>
+
+<section aria-labelledby="disagree" class="prelim">
+  <h2 id="disagree">When the model and the answer key disagree</h2>
+  <p class="status" role="note">Preliminary. These readings are ours and are waiting for review by a chemist.</p>
+  <p>On 300 test tasks (the core set and 150 more), Opus 5.5 gave a complete answer for 233 compounds, and 223 of those matched the record. We went back to the source papers for the other 10. In 7 of them the record itself looks wrong: the database converted a name to the wrong structure, or the paper’s name contradicts its own spectra. If that holds up, the headline accuracy is understated, and the screens we use to flag bad records need to be stricter.</p>
+  <div class="cases">
+<div class="case-group"><h3>The database got the structure wrong <span class="count">2</span></h3><ul><li><details><summary><span class="case-id">00026</span> Ketone recorded as an aldehyde</summary><p>The database has a biaryl aldehyde; the paper names a diaryl ketone.</p><p>The paper's name matches the model, so the error came in when the database converted the name to a structure. The data fit the ketone: no CHO proton, C=O at 193.8 ppm, IR 1659 cm⁻¹, and a 1,2,4-substituted ring (7.56 d, 2.0 Hz; 7.19 dd, 8.4/2.0 Hz; 6.82 d, 8.4 Hz). Also, ‘3.92 (d, J = 1.8 Hz, 6H)’ is probably the two OMe singlets written as a doublet.</p></details></li><li><details><summary><span class="case-id">00218</span> Pyridyl position not given in the paper</summary><p>The paper says only '7-pyridyl'; the database chose pyridin-2-yl; the data look like pyridin-3-yl.</p><p>The name doesn't say where the pyridine is attached, and the database picked the 2-position. The signals at 8.63 (d, 1.9 Hz), 8.58 (dd, 4.8/1.7 Hz), 7.68 (dt, 7.8/2.0 Hz) and 7.31 (ddd, 7.8/4.8/0.9 Hz) look like a 3-substituted pyridine to me. The 8.63 doublet with only a 1.9 Hz coupling would be H-2, and a 2-substituted pyridine has no proton like that.</p></details></li></ul></div>
+<div class="case-group"><h3>The paper’s name and its own data disagree <span class="count">4</span></h3><ul><li><details><summary><span class="case-id">00105</span> NMR and HRMS disagree</summary><p>The name and HRMS say 3,4-dimethylphenyl; the NMR shows two OMe groups.</p><p>The ¹H list has two 3H singlets at 3.90 and 3.87 with carbons at 56.1/56.08, and two oxygenated aromatic carbons (149.5, 149.0). There is no aryl CH₃ near 2.2 ppm. That looks like 3,4-dimethoxyphenyl. The name and HRMS fit the dimethyl compound, so one part was probably copied from an analogue. The model went with the NMR and said so in its answer:</p></details></li><li><details><summary><span class="case-id">00086</span> Named meta, data look para</summary><p>Named an ethyl 3-substituted benzoate; two 2H doublets and the authors' own '2xCH' labels suggest para.</p><p>The ¹H list has two 2H doublets (7.97 and 7.69, J = 8.0 Hz), and in the paper the authors label the ¹³C signals at 130.5 and 120.0 as ‘2×CH’. There are 9 carbon signals; para gives 9 and meta would give 11. The ethyl quartet and triplet are also given J = 8.0 Hz, which looks like a typo.</p></details></li><li><details><summary><span class="case-id">00025</span> Named meta, data look para (2)</summary><p>Named a 3-substituted phenyl sulfonate; a 2H doublet at 7.16 and 13 carbon signals suggest para.</p><p>There is a 2H doublet at 7.16 (J = 7.9 Hz), which fits the two protons next to the sulfonate oxygen on a para ring. There are 13 carbon signals; para gives 13 and meta would need 15. Same pattern as case 6.</p></details></li><li><details><summary><span class="case-id">00280</span> Linear or angular fusion?</summary><p>Named benzo[g] (linear); a deshielded 1H at 8.6 and an 8.6 Hz doublet, with no aromatic singlets, look angular.</p><p>Linear fusion should give two aromatic singlets. Instead there is a 1H multiplet at 8.55–8.66 and a doublet at 7.81 (J = 8.6 Hz), and no singlets, which looks more like the angular isomer. I'm surer about the data than about the ring nomenclature.</p></details></li></ul></div>
+<div class="case-group"><h3>The paper may have assigned the wrong product <span class="count">1</span></h3><ul><li><details><summary><span class="case-id">00070</span> C- or O-ethylation?</summary><p>Named a 3-ethyl chroman-4-one; the data may fit the 4-ethoxy-2H-chromene better.</p><p>Only three sp³ carbons are listed (77.5, 70.8, 15.1). The chromanone needs four (C-2, a quaternary C-3, the CH₂ and the CH₃); the enol ether needs three. The ethyl CH₂ is at 3.62–3.79 ppm with its carbon at 70.8, where I'd expect an OCH₂, not a C-ethyl. Only one ketone carbon is listed (194.5), and the chromanone would need two. So I read this as O-alkylation of the 1,3-dicarbonyl, which would mean the paper misassigned the product. This is the case I'm least sure about.</p></details></li></ul></div>
+<div class="case-group"><h3>The model is probably wrong <span class="count">3</span></h3><ul><li><details><summary><span class="case-id">00104</span> Pyrazolo[1,5-a]pyrimidine regiochemistry</summary><p>The paper and the record agree (5-amino-7-phenyl); the model proposed 7-amino-5-phenyl.</p><p>The record matches the paper here. I don't think 1D ¹H/¹³C peak lists can tell these two regioisomers apart, so either the model is wrong or the question can't be answered from the data it was given.</p></details></li><li><details><summary><span class="case-id">00181</span> Side-chain position</summary><p>The paper and the record agree (side chain at C6); the model put it at C5.</p><p>The record matches the paper. H-6a is a doublet (J = 7.7 Hz), apparently coupled only to H-3a, which fits a quaternary C6 carrying the side chain. I think the model is wrong here.</p></details></li><li><details><summary><span class="case-id">00094</span> 1- or 2-naphthyl?</summary><p>The paper and the record agree (naphthalen-1-yl); the model proposed naphthalen-2-yl.</p><p>The record matches the paper. The aromatic signals are given as ranges (7.53–7.56, 2H; 7.84–7.93, 4H; 8.30–8.34, 2H including isoxazole H-3), and I can't tell which isomer they fit better.</p></details></li></ul></div>
+  </div>
+</section>
+
+<section aria-labelledby="use">
+  <h2 id="use">Use the environment</h2>
+  <p>SpecStep ships as an environment for the <a href="https://github.com/PrimeIntellect-ai/verifiers">verifiers</a> framework. The reward can be swapped for the final-answer or similarity baselines, so you can compare them on the same tasks.</p>
+<pre><code>import verifiers as vf
+
+env = vf.load_environment("specstep-env", reward="specstep")
+# reward="final_only" or reward="tool_hygiene" for the baselines</code></pre>
+  <p>Available with the preprint.</p>
+</section>
+
+<section aria-labelledby="data">
+  <h2 id="data">Data</h2>
+  <p>Tasks come from <a href="https://huggingface.co/datasets/sweetssweets/NMRBank">NMRBank</a>, which extracted NMR records from open-access articles in PubMed Central. We parsed the IR and HRMS values from the same paragraphs, removed the authors’ assignment labels, and kept a record only if its HRMS, ¹H integration and ¹³C peak count agree with the structure. Of 91,707 records, 19,321 passed: 15,107 for training, 50 for development and 350 for testing. Every task keeps its source article and licence, and only CC BY and CC0 articles are used.</p>
+  <p>Code is MIT-licensed.</p>
+</section>
+
+<section aria-labelledby="cite">
+  <h2 id="cite">Cite</h2>
+<pre class="bibtex"><code>@misc{nayak2026specstep,
+  title  = {SpecStep: Verifiable Intermediate Rewards for
+            LLM Structure Elucidation from Literature
+            NMR, IR and HRMS Data},
+  author = {Nayak, Vedant},
+  year   = {2026},
+  note   = {Preprint in preparation}
+}</code></pre>
+  <button type="button" class="copy" data-copy=".bibtex code">Copy BibTeX</button>
+</section>
+
+</main>
+
+<footer>
+  <p>Contact: <a href="mailto:vedantxn@gmail.com">vedantxn@gmail.com</a></p>
+</footer>
+
+<script src="spectrum.js"></script>
+</body>
+</html>
